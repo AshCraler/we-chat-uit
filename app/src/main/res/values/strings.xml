@@ -1,0 +1,122 @@
+<resources>
+    <string name="app_name">TuiChat</string>
+
+    <string name="facebook_app_id">589715442066422</string>
+    <string name="fb_login_protocol_scheme">fb589715442066422</string>
+    <string name="channel_name">TuiChat Channel</string>
+    <string name="channel_description">Notification message</string>
+
+    <string name="btnLoginPhoneNumber">Continue with phone number</string>
+    <string name="btnLoginGoogle">Continue with Google</string>
+    <string name="btnLoginFacebook">Continue with Facebook</string>
+
+    <string name="hours">h ago</string>
+    <string name="minutes">m ago</string>
+    <string name="days">d ago</string>
+    <string name="today">Today</string>
+
+    <string name="toast1">Too many requests. Please wait 2 minutes and try again later</string>
+    <string name="toast2">Error! Please enter the correct phone number</string>
+    <string name="toast3">Error! Please try again</string>
+    <string name="toast4">Select your image</string>
+    <string name="toast5">Canceled login</string>
+    <string name="toast6">Permission Granted</string>
+    <string name="toast7">Permission Denied. </string>
+    <string name="toast8">Upload failed! Please try again</string>
+    <string name="toast9">Upload successful!</string>
+    <string name="toast10">Message copied</string>
+    <string name="toast11">Delete successful</string>
+    <string name="toast12">Update successful</string>
+    <string name="toast13">Press back again to exit the application</string>
+
+    <string name="tvDeveloper">Thanguit Developer</string>
+
+    <string name="tvPhoneNumber">Verify your phone number</string>
+    <string name="tvPhoneNumberTip">TuiChat will send an SMS message to verify your phone number</string>
+    <string name="edtPNumber">Your phone number</string>
+    <string name="edtPNumberError">Enter your phone number</string>
+    <string name="btnPhoneNumber">Continue</string>
+    <string name="btnBack">Sign in with another way</string>
+
+    <string name="tvOTP">OTP Verification</string>
+    <string name="tvOTPTip">Please enter the OTP sent to you</string>
+    <string name="btnVerifyOTP">Verify</string>
+    <string name="tvErrorPhoneNumber">Null</string>
+    <string name="edtOTPError">Missing</string>
+
+    <string name="tvLoading">Please wait...🐌</string>
+
+    <string name="tvToast">This is toast content</string>
+    <string name="tvSetupProfile">Profile Information</string>
+    <string name="tvSetupProfileTip">Please set your name and an optional profile image</string>
+    <string name="edtSetupProfileName">Type your name</string>
+    <string name="btnSetupProfile">Setup Profile</string>
+    <string name="edtSetupProfileNameError">Type your name</string>
+
+    <string name="menuActionChat">Chat</string>
+    <string name="menuActionPeople">People</string>
+    <string name="menuActionSetting">Setting</string>
+
+    <string name="tvChatName">Your friend</string>
+    <string name="tvLastMessage">Tap to chat</string>
+    <string name="tvChatTime">00:00</string>
+
+    <string name="edtChatMessage">Type something</string>
+    <string name="tvUserName">User name</string>
+
+    <string name="tvSend">Text send</string>
+    <string name="tvReceive">Text receive</string>
+    <string name="tvTime">00:00</string>
+
+    <string name="tedBottomPicker1">Done</string>
+    <string name="tedBottomPicker2">No Image</string>
+    <string name="tedBottomPicker3">You can only select up to 5 images</string>
+
+    <string name="tvCopy">Copy</string>
+    <string name="tvRemoveForYou">Remove for you</string>
+    <string name="tvRemoveForEveryone">Remove for everyone</string>
+
+    <string name="tvDialogTitle">Title</string>
+    <string name="tvDialogContent">Content</string>
+    <string name="btnDialog1">Action 1</string>
+    <string name="btnDialog2">Action 2</string>
+
+    <string name="tvDialogContent1">This message will be removed for you. Other chat members will still be able to see it.</string>
+    <string name="tvDialogContent2">You\'ll permanently remove this message for all chat members.</string>
+    <string name="tvDialogContent3">Do you want to sign out?</string>
+    <string name="btnDialog11">Cancel</string>
+    <string name="btnDialog22">Delete</string>
+    <string name="btnDialog23">Sign out</string>
+
+    <string name="tvDialogTitle1">End the call</string>
+    <string name="tvDialogContent4">Do you want to end this call?</string>
+    <string name="btnDialog12">No</string>
+    <string name="btnDialog24">Yes</string>
+
+    <string name="edtSearchPeople">Search</string>
+
+    <string name="tvTheme">Theme</string>
+    <string name="tvLanguage">Language</string>
+    <string name="tvVietnamFlag">Vietnamese</string>
+    <string name="tvEnglandFlag">English</string>
+
+    <string name="tvPersonalTitle">Personal information</string>
+    <string name="tvPersonalName">Name</string>
+    <string name="edtUserName">Name</string>
+    <string name="edtEmail">abc@gmail.com</string>
+    <string name="tvEmail">Email</string>
+
+    <string name="btnLogout">Sign out</string>
+    <string name="btnSave">Save</string>
+
+    <string name="tv_state">Calling…</string>
+    <string name="stringeeState1">Started</string>
+    <string name="stringeeState2">Ended</string>
+    <string name="stringeeState3">Reconnecting…</string>
+    <string name="stringeeState4">Outgoing call</string>
+    <string name="stringeeState5">Ringing</string>
+    <string name="stringeeState6">Starting</string>
+    <string name="stringeeState7">Busy</string>
+
+    <string name="tvStop">Due to the lack of funding, this function has been temporarily discontinued.</string>
+</resources>

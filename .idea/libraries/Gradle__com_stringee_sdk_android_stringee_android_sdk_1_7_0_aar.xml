@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.stringee.sdk.android:stringee-android-sdk:1.7.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/3f4a39d0f9a5e6fc8b29f21242bdca3e/transformed/jetified-stringee-android-sdk-1.7.0/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/3f4a39d0f9a5e6fc8b29f21242bdca3e/transformed/jetified-stringee-android-sdk-1.7.0/jars/libs/stringee-android-sdk-1.7.0.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3f4a39d0f9a5e6fc8b29f21242bdca3e/transformed/jetified-stringee-android-sdk-1.7.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.stringee.sdk.android/stringee-android-sdk/1.7.0/5379619f10d8ce3fce9b09077a83cc9baac1fef6/stringee-android-sdk-1.7.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
