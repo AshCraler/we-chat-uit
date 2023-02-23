@@ -17,9 +17,7 @@ public class DataLocalManager {
     public static DataLocalManager getInstance() {
         if (instance == null) {
             synchronized (DataLocalManager.class) {
-                if (instance == null) {
-                    instance = new DataLocalManager();
-                }
+                instance = new DataLocalManager();
             }
         }
         return instance;

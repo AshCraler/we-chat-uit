@@ -28,20 +28,25 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String title, String messageBody) {
+        //Create Pending Intent
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
 
+        //Create sound
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        //Create notification and set its properties
         Notification notification = new NotificationCompat.Builder(this, MyApplication.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_chat)
                 .setContentTitle(title.trim())
                 .setContentText(messageBody)
                 .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent)
+                .setSound(defaultSoundUri)          //set sound
+                .setContentIntent(pendingIntent)    //set pending intent
                 .build();
 
+        //Notify to user through a NotificationManagerCompat
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         notificationManagerCompat.notify(0, notification);
     }

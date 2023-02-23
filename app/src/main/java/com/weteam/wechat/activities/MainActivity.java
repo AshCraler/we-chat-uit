@@ -10,11 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
+//import com.squareup;
 import com.squareup.picasso.Picasso;
 import com.stringee.StringeeClient;
 import com.stringee.call.StringeeCall;
@@ -94,13 +96,17 @@ public class MainActivity extends AppCompat {
     }
 
     private void initializeViews() {
+        //Animation scale
         animationScale.eventCircleImageView(this, activityMainBinding.civAvatar);
 
+        //Set Pager adapter as bottom nav bar
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
         activityMainBinding.vp2ViewPager2.setAdapter(viewPagerAdapter);
         activityMainBinding.vp2ViewPager2.setCurrentItem(0); // Set default fragment
         activityMainBinding.vp2ViewPager2.setOffscreenPageLimit(2);
         activityMainBinding.vp2ViewPager2.setPageTransformer(new ZoomOutPageTransformer()); // Set animation change page
+
+        //Get user from Firebse
 
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
@@ -126,6 +132,13 @@ public class MainActivity extends AppCompat {
             });
 
             initAndConnectStringee();
+        } else {
+            FirebaseMessaging.getInstance().getToken().addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
         }
     }
 

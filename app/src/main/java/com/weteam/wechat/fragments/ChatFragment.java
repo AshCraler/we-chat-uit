@@ -8,7 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +30,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.squareup.picasso.Picasso;
 import com.weteam.wechat.R;
 import com.weteam.wechat.adapters.StoryAdapter;
 import com.weteam.wechat.adapters.UserAdapter;
 import com.weteam.wechat.animations.AnimationScale;
+import com.weteam.wechat.database.FirebaseManager;
 import com.weteam.wechat.databinding.FragmentChatBinding;
 import com.weteam.wechat.models.Story;
 import com.weteam.wechat.models.User;
@@ -60,7 +65,7 @@ public class ChatFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private FirebaseStorage firebaseStorage;
-//    private FirebaseManager firebaseManager;
+    private FirebaseManager firebaseManager;
 
     private List<User> userList;
     private UserAdapter userAdapter;
@@ -97,6 +102,8 @@ public class ChatFragment extends Fragment {
         animationScale = AnimationScale.getInstance();
         loadingDialog = LoadingDialog.getInstance();
 
+        firebaseManager = FirebaseManager.getInstance();
+
         initializeViews();
 //        listeners();
     }
@@ -108,10 +115,15 @@ public class ChatFragment extends Fragment {
     }
 
     private void initializeViews() {
+        firebaseManager.getConversation("cvs01");
+        Log.e("Testest", "kkk");
+//        scale
         animationScale.eventConstraintLayout(getContext(), fragmentChatBinding.cslStory);
 
+//        get user info
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
+            //get conversations from firebase
             userList = new ArrayList<>();
             userAdapter = new UserAdapter(getActivity(), userList);
             fragmentChatBinding.rvChat.setAdapter(userAdapter);
@@ -132,62 +144,65 @@ public class ChatFragment extends Fragment {
                 }
             });
 
-//            FirebaseManager.getInstance().getUserInfo(currentUser.getUid().trim());
-//            FirebaseManager.getInstance().setReadUserInformation(new FirebaseManager.GetUserInformationListener() {
-//                @Override
-//                public void getUserInformationListener(User user) {
-//                    if (user != null) {
-//                        mUser = new User();
-//                        mUser = user;
-//
-//                        Picasso.get()
-//                                .load(user.getAvatar())
-//                                .placeholder(R.drawable.ic_user_avatar)
-//                                .error(R.drawable.ic_user_avatar)
-//                                .into(fragmentChatBinding.civStory);
-//                    }
-//                }
-//            });
-//
-//            firebaseDatabase.getReference().child(STORY_DATABASE.trim()).addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    if (snapshot.exists()) {
-//                        userStoryList = new ArrayList<>();
-//
-//                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                            UserStory userStory = new UserStory();
-//                            userStory.setName(dataSnapshot.child("name").getValue(String.class));
-//                            userStory.setAvatar(dataSnapshot.child("avatar").getValue(String.class));
-//                            userStory.setLastUpdated(dataSnapshot.child("lastUpdated").getValue(String.class));
-//
-//                            List<Story> storyList = new ArrayList<>();
-//                            for (DataSnapshot dataSnapshot1 : dataSnapshot.child("stories").getChildren()) {
-//                                Story story = dataSnapshot1.getValue(Story.class);
-//                                storyList.add(story);
-//                            }
-//                            userStory.setStoryList(storyList);
-//                            userStoryList.add(userStory);
-//                        }
-//
-//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-//                        fragmentChatBinding.rvStory.setLayoutManager(linearLayoutManager);
-//                        storyAdapter = new StoryAdapter(getContext(), userStoryList);
-//                        fragmentChatBinding.rvStory.setHasFixedSize(true);
-//                        fragmentChatBinding.rvStory.setAdapter(storyAdapter);
-//
-//                        fragmentChatBinding.sflItemStory.setVisibility(View.GONE);
-//                        fragmentChatBinding.rvStory.setVisibility(View.VISIBLE);
-//                    } else {
-//                        fragmentChatBinding.sflItemStory.setVisibility(View.GONE);
-//                        fragmentChatBinding.rvStory.setVisibility(View.VISIBLE);
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//                }
-//            });
+            //Get stories
+            FirebaseManager.getInstance().getUserInfo(currentUser.getUid().trim());
+            FirebaseManager.getInstance().setReadUserInformation(new FirebaseManager.GetUserInformationListener() {
+                @Override
+                public void getUserInformationListener(User user) {
+                    if (user != null) {
+                        Log.e("kkk", "user non-null");
+                        mUser = new User();
+                        mUser = user;
+
+                        Picasso.get()
+                                .load(user.getAvatar())
+                                .placeholder(R.drawable.ic_user_avatar)
+                                .error(R.drawable.ic_user_avatar)
+                                .into(fragmentChatBinding.civStory);
+                    }
+                }
+            });
+
+            firebaseDatabase.getReference().child(STORY_DATABASE.trim()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        userStoryList = new ArrayList<>();
+
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            UserStory userStory = new UserStory();
+                            userStory.setName(dataSnapshot.child("name").getValue(String.class));
+                            userStory.setAvatar(dataSnapshot.child("avatar").getValue(String.class));
+                            userStory.setLastUpdated(dataSnapshot.child("lastUpdated").getValue(String.class));
+
+                            List<Story> storyList = new ArrayList<>();
+                            for (DataSnapshot dataSnapshot1 : dataSnapshot.child("stories").getChildren()) {
+                                Story story = dataSnapshot1.getValue(Story.class);
+                                storyList.add(story);
+                            }
+                            userStory.setStoryList(storyList);
+                            userStoryList.add(userStory);
+                        }
+
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+                        fragmentChatBinding.rvStory.setLayoutManager(linearLayoutManager);
+                        storyAdapter = new StoryAdapter(getContext(), userStoryList);
+                        fragmentChatBinding.rvStory.setHasFixedSize(true);
+                        fragmentChatBinding.rvStory.setAdapter(storyAdapter);
+
+                        fragmentChatBinding.sflItemStory.setVisibility(View.GONE);
+                        fragmentChatBinding.rvStory.setVisibility(View.VISIBLE);
+                    } else {
+                        Log.e("kkk", "NO");
+                        fragmentChatBinding.sflItemStory.setVisibility(View.GONE);
+                        fragmentChatBinding.rvStory.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
         }
     }
 
