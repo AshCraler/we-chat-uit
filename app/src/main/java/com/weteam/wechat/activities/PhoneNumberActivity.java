@@ -14,7 +14,7 @@ import com.weteam.wechat.utils.OpenSoftKeyboard;
 
 public class PhoneNumberActivity extends AppCompat {
     private ActivityPhoneNumberBinding activityPhoneNumberBinding;
-    private static final String TAG = "PhoneNumberActivity";
+    private static final String TAG ="PhoneNumberActivity";
 
     private AnimationScale animationScale;
     private OpenSoftKeyboard openSoftKeyboard;
