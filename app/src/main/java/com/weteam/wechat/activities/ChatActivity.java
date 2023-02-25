@@ -47,6 +47,7 @@ import com.weteam.wechat.database.FirebaseManager;
 import com.weteam.wechat.databinding.ActivityChatBinding;
 import com.weteam.wechat.models.ChatMessage;
 import com.weteam.wechat.models.User;
+import com.weteam.wechat.utils.Common;
 import com.weteam.wechat.utils.LoadingDialog;
 import com.weteam.wechat.utils.MyToast;
 import com.weteam.wechat.utils.OpenSoftKeyboard;
@@ -366,41 +367,41 @@ public class ChatActivity extends AppCompat {
         activityChatBinding.ibVideoCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent callIntent = new Intent(ChatActivity.this, OutGoingCallActivity.class);
-                startActivity(callIntent);
-//                if (MainActivity.stringeeClient.isConnected()) {
-//                    Intent callIntent = new Intent(ChatActivity.this, OutGoingCallActivity.class);
-//
-////                    Bundle bundle = new Bundle();
-////                    bundle.putParcelable("USER", user);
-////                    bundle.putBoolean("VIDEO_CALL", true);
-////                    callIntent.putExtras(bundle);
-//
-//                    startActivity(callIntent);
-//                } else {
-//                    Common.reportMessage(ChatActivity.this, "Stringee session not connected");
-//                }
+//                Intent callIntent = new Intent(ChatActivity.this, OutGoingCallActivity.class);
+//                startActivity(callIntent);
+                if (MainActivity.stringeeClient.isConnected()) {
+                    Intent callIntent = new Intent(ChatActivity.this, OutGoingCallActivity.class);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("USER", user);
+                    bundle.putBoolean("VIDEO_CALL", true);
+                    callIntent.putExtras(bundle);
+
+                    startActivity(callIntent);
+                } else {
+                    Common.reportMessage(ChatActivity.this, "Stringee session not connected");
+                }
             }
         });
 
         activityChatBinding.ibCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent callIntent = new Intent(ChatActivity.this, OutGoingCallActivity.class);
-                startActivity(callIntent);
+//                Intent callIntent = new Intent(ChatActivity.this, OutGoingCallActivity.class);
+//                startActivity(callIntent);
 
-//                if (MainActivity.stringeeClient.isConnected()) {
-//                    Intent callIntent = new Intent(ChatActivity.this, OutGoingCallActivity.class);
-//
-////                    Bundle bundle = new Bundle();
-////                    bundle.putParcelable("USER", user);
-////                    bundle.putBoolean("VIDEO_CALL", false);
-////                    callIntent.putExtras(bundle);
-//
-//                    startActivity(callIntent);
-//                } else {
-//                    Common.reportMessage(ChatActivity.this, "Stringee session not connected");
-//                }
+                if (MainActivity.stringeeClient.isConnected()) {
+                    Intent callIntent = new Intent(ChatActivity.this, OutGoingCallActivity.class);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("USER", user);
+                    bundle.putBoolean("VIDEO_CALL", false);
+                    callIntent.putExtras(bundle);
+
+                    startActivity(callIntent);
+                } else {
+                    Common.reportMessage(ChatActivity.this, "Stringee session not connected");
+                }
             }
         });
 
