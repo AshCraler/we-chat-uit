@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "100071186878",
+    "firebase_url": "https://tuichat-21962-default-rtdb.firebaseio.com",
+    "project_id": "tuichat-21962",
+    "storage_bucket": "tuichat-21962.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100071186878:android:50bacaea6cdd4b4f88d9ef",
+        "android_client_info": {
+          "package_name": "com.weteam.wechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "100071186878-9gj1mr56jvn0l93d8eplqt0p3jmsm68g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.weteam.wechat",
+            "certificate_hash": "811f550ddf5cbae47942a5435e590dbf4f437134"
+          }
+        },
+        {
+          "client_id": "100071186878-6i6k720u6vb3vhggu7mc6ci5a2uek536.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLLiBHuVBgbPqmTzFVjKPJjcHVpDAixrQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "100071186878-6i6k720u6vb3vhggu7mc6ci5a2uek536.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

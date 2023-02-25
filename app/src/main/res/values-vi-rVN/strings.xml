@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TuiChat</string>
+    <string name="app_name">WeChat</string>
 
     <string name="facebook_app_id">589715442066422</string>
     <string name="fb_login_protocol_scheme">fb589715442066422</string>
-    <string name="channel_name">TuiChat Channel</string>
+    <string name="facebook_client_token">56789</string>
+    <string name="channel_name">WeChat Channel</string>
     <string name="channel_description">Notification message</string>
 
     <string name="btnLoginPhoneNumber">Tiếp tục với số điện thoại</string>
@@ -33,7 +34,7 @@
     <string name="tvDeveloper">Thanguit Developer</string>
 
     <string name="tvPhoneNumber">Xác minh số điện thoại của bạn</string>
-    <string name="tvPhoneNumberTip">TuiChat sẽ gửi tin nhắn SMS để xác minh số điện thoại của bạn</string>
+    <string name="tvPhoneNumberTip">WeChat sẽ gửi tin nhắn SMS để xác minh số điện thoại của bạn</string>
     <string name="edtPNumber">Số điện thoại</string>
     <string name="edtPNumberError">Nhập số điện thoại</string>
     <string name="btnPhoneNumber">Tiếp tục</string>

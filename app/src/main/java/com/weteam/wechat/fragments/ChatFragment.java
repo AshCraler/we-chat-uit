@@ -8,7 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +30,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.squareup.picasso.Picasso;
 import com.weteam.wechat.R;
 import com.weteam.wechat.adapters.StoryAdapter;
 import com.weteam.wechat.adapters.UserAdapter;
 import com.weteam.wechat.animations.AnimationScale;
+import com.weteam.wechat.database.FirebaseManager;
 import com.weteam.wechat.databinding.FragmentChatBinding;
 import com.weteam.wechat.models.Story;
 import com.weteam.wechat.models.User;
@@ -38,6 +43,7 @@ import com.weteam.wechat.models.UserStory;
 import com.weteam.wechat.utils.LoadingDialog;
 import com.weteam.wechat.utils.MyToast;
 
+import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +51,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import gun0912.tedbottompicker.TedBottomPicker;
 import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
@@ -60,7 +67,7 @@ public class ChatFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private FirebaseStorage firebaseStorage;
-//    private FirebaseManager firebaseManager;
+    private FirebaseManager firebaseManager;
 
     private List<User> userList;
     private UserAdapter userAdapter;
@@ -72,6 +79,7 @@ public class ChatFragment extends Fragment {
     private LoadingDialog loadingDialog;
 
     private User mUser;
+    private long userStoryCount;
 
     public ChatFragment() {
     }
@@ -97,6 +105,8 @@ public class ChatFragment extends Fragment {
         animationScale = AnimationScale.getInstance();
         loadingDialog = LoadingDialog.getInstance();
 
+        firebaseManager = FirebaseManager.getInstance();
+
         initializeViews();
 //        listeners();
     }
@@ -108,10 +118,13 @@ public class ChatFragment extends Fragment {
     }
 
     private void initializeViews() {
+//        scale
         animationScale.eventConstraintLayout(getContext(), fragmentChatBinding.cslStory);
 
+//        get user info
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
+            //get conversations from firebase
             userList = new ArrayList<>();
             userAdapter = new UserAdapter(getActivity(), userList);
             fragmentChatBinding.rvChat.setAdapter(userAdapter);
@@ -132,62 +145,79 @@ public class ChatFragment extends Fragment {
                 }
             });
 
-//            FirebaseManager.getInstance().getUserInfo(currentUser.getUid().trim());
-//            FirebaseManager.getInstance().setReadUserInformation(new FirebaseManager.GetUserInformationListener() {
-//                @Override
-//                public void getUserInformationListener(User user) {
-//                    if (user != null) {
+            //Get stories
+            FirebaseManager.getInstance().setReadUserInformation(new FirebaseManager.GetUserInformationListener() {
+                @Override
+                public void getUserInformationListener(User user) {
+                    if (user != null) {
 //                        mUser = new User();
-//                        mUser = user;
-//
-//                        Picasso.get()
-//                                .load(user.getAvatar())
-//                                .placeholder(R.drawable.ic_user_avatar)
-//                                .error(R.drawable.ic_user_avatar)
-//                                .into(fragmentChatBinding.civStory);
-//                    }
-//                }
-//            });
-//
-//            firebaseDatabase.getReference().child(STORY_DATABASE.trim()).addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    if (snapshot.exists()) {
-//                        userStoryList = new ArrayList<>();
-//
-//                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                            UserStory userStory = new UserStory();
-//                            userStory.setName(dataSnapshot.child("name").getValue(String.class));
-//                            userStory.setAvatar(dataSnapshot.child("avatar").getValue(String.class));
-//                            userStory.setLastUpdated(dataSnapshot.child("lastUpdated").getValue(String.class));
-//
-//                            List<Story> storyList = new ArrayList<>();
-//                            for (DataSnapshot dataSnapshot1 : dataSnapshot.child("stories").getChildren()) {
-//                                Story story = dataSnapshot1.getValue(Story.class);
-//                                storyList.add(story);
-//                            }
-//                            userStory.setStoryList(storyList);
-//                            userStoryList.add(userStory);
-//                        }
-//
-//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-//                        fragmentChatBinding.rvStory.setLayoutManager(linearLayoutManager);
-//                        storyAdapter = new StoryAdapter(getContext(), userStoryList);
-//                        fragmentChatBinding.rvStory.setHasFixedSize(true);
-//                        fragmentChatBinding.rvStory.setAdapter(storyAdapter);
-//
-//                        fragmentChatBinding.sflItemStory.setVisibility(View.GONE);
-//                        fragmentChatBinding.rvStory.setVisibility(View.VISIBLE);
-//                    } else {
-//                        fragmentChatBinding.sflItemStory.setVisibility(View.GONE);
-//                        fragmentChatBinding.rvStory.setVisibility(View.VISIBLE);
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//                }
-//            });
+                        mUser = user;
+
+                        Picasso.get()
+                                .load(user.getAvatar())
+                                .placeholder(R.drawable.ic_user_avatar)
+                                .error(R.drawable.ic_user_avatar)
+                                .into(fragmentChatBinding.civStory);
+
+                        fragmentChatBinding.cvUpper.setVisibility(View.VISIBLE);
+                        listeners();
+                    }
+                }
+            });
+            FirebaseManager.getInstance().getUserInfo(currentUser.getUid().trim());
+
+
+            firebaseDatabase.getReference().child(STORY_DATABASE.trim()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        userStoryList = new ArrayList<>();
+                        userStoryCount =  snapshot.getChildrenCount();
+
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            UserStory userStory = new UserStory();
+                            userStory.setName(dataSnapshot.child("name").getValue(String.class));
+                            userStory.setAvatar(dataSnapshot.child("avatar").getValue(String.class));
+                            userStory.setLastUpdated(dataSnapshot.child("last_updated").getValue(String.class));
+
+                            List<Story> storyList = new ArrayList<>();
+                            try{
+                                DataSnapshot child = dataSnapshot.child("story_list");
+                                Map<String, Map<String, String>> data = (Map<String, Map<String, String>>)child.getValue();
+
+                                if(data != null) {
+                                    for (Map.Entry<String, Map<String, String>> map : data.entrySet()) {
+                                        Story story = new Story();
+                                        story.setImage(map.getValue().get("image"));
+                                        story.setTime(map.getValue().get("time"));
+                                        storyList.add(story);
+                                    }
+                                    userStory.setStoryList(storyList);
+                                    userStoryList.add(userStory);
+                                }
+                            } catch (Error error){
+                                Log.e("ERROR ", error.toString());
+                            }
+                        }
+
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+                        fragmentChatBinding.rvStory.setLayoutManager(linearLayoutManager);
+                        storyAdapter = new StoryAdapter(getContext(), userStoryList);
+                        fragmentChatBinding.rvStory.setHasFixedSize(true);
+                        fragmentChatBinding.rvStory.setAdapter(storyAdapter);
+
+                        fragmentChatBinding.sflItemStory.setVisibility(View.GONE);
+                        fragmentChatBinding.rvStory.setVisibility(View.VISIBLE);
+                    } else {
+                        fragmentChatBinding.sflItemStory.setVisibility(View.GONE);
+                        fragmentChatBinding.rvStory.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
         }
     }
 
@@ -266,19 +296,19 @@ public class ChatFragment extends Fragment {
                                     HashMap<String, Object> userStoryObj = new HashMap<>();
                                     userStoryObj.put("name", userStory.getName());
                                     userStoryObj.put("avatar", userStory.getAvatar());
-                                    userStoryObj.put("lastUpdated", userStory.getLastUpdated());
+                                    userStoryObj.put("last_updated", userStory.getLastUpdated());
 
                                     Story story = new Story(storyImage, userStory.getLastUpdated());
 
                                     firebaseDatabase.getReference()
                                             .child(STORY_DATABASE.trim())
-                                            .child(currentUser.getUid().trim())
+                                            .child(String.valueOf(userStoryCount))
                                             .updateChildren(userStoryObj);
 
                                     firebaseDatabase.getReference()
                                             .child(STORY_DATABASE.trim())
-                                            .child(currentUser.getUid().trim())
-                                            .child("stories")
+                                            .child(String.valueOf(userStoryCount))
+                                            .child("story_list")
                                             .push()
                                             .setValue(story);
 

@@ -1,18 +1,31 @@
 package com.weteam.wechat.database;
 
+import android.media.metrics.Event;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.weteam.wechat.models.Conversation;
+import com.weteam.wechat.models.TestList;
 import com.weteam.wechat.models.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+///Class
 public class FirebaseManager {
     private static final String TAG = "FirebaseManager";
     private static FirebaseManager instance;
@@ -24,12 +37,14 @@ public class FirebaseManager {
     private static final String STATUS_DATABASE_OFFLINE = "offline";
     private static final String TOKEN = "token";
 
-    private static FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private static FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+    private static final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private static final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+    public static final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
     private FirebaseManager() {
     }
 
+    //singleton
     public static FirebaseManager getInstance() {
         if (instance == null) {
             synchronized (FirebaseManager.class) {
@@ -40,6 +55,7 @@ public class FirebaseManager {
         }
         return instance;
     }
+
 
     public interface GetUserAvatarListener {
         void getUserAvatarListener(String avatar);
@@ -104,11 +120,13 @@ public class FirebaseManager {
     }
 
     public void getUserName(String uid) {
-        firebaseDatabase.getReference().child("users/" + uid.trim() + "/name").addValueEventListener(new ValueEventListener() {
+        firebaseDatabase.getReference().child("users/" + uid.trim() + "/name")
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     getUserNameListener.getUserNameListener(snapshot.getValue(String.class));
+                    Log.e("On Data changeeeeeeeeee", snapshot.toString());
                 }
             }
 
@@ -133,5 +151,27 @@ public class FirebaseManager {
         firebaseDatabase.getReference().child("users/" + uid.trim()).updateChildren(setToken);
 
         Log.d(TAG, token.trim());
+    }
+
+    public void getConversation(String id) {
+        firebaseFirestore.collection("/conversation")
+                .document(  id)
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot queryDocumentSnapshots) {
+                try{
+                    Conversation conversation = queryDocumentSnapshots.toObject(Conversation.class);
+                    Log.e("Doc cvs01", conversation.toString());
+                } catch (Error error){
+                    Log.e("CATCH DDDD: ", error.toString());
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("document cvs01", e.toString());
+                    }
+                });
     }
 }

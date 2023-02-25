@@ -7,21 +7,26 @@
     android:orientation="vertical"
     tools:context=".fragments.ChatFragment">
 
+<!--    cardview 1-->
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_upper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone">
 
+<!--        horizontal linear layout-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
+<!--            Button to add story-->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cslStory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
+<!--                avatar circle image-->
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/civStory"
                     android:layout_width="70dp"
@@ -34,6 +39,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+<!--                icon add-->
                 <ImageView
                     android:id="@+id/ivAdd"
                     android:layout_width="wrap_content"
@@ -43,6 +49,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/civStory" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+<!--            shimmer-->
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/sflItemStory"
                 android:layout_width="match_parent"
@@ -80,6 +87,7 @@
                 </LinearLayout>
             </com.facebook.shimmer.ShimmerFrameLayout>
 
+<!--            stories-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvStory"
                 android:layout_width="match_parent"
@@ -90,10 +98,12 @@
 
     </androidx.cardview.widget.CardView>
 
+<!--    list conversation-->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+<!--        shimmer-->
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/sflItemConversation"
             android:layout_width="match_parent"
@@ -130,6 +140,7 @@
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
 
+<!--        conversations-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvChat"
             android:layout_width="match_parent"

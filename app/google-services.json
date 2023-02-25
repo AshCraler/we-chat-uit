@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "100071186878",
-    "firebase_url": "https://tuichat-21962-default-rtdb.firebaseio.com",
-    "project_id": "tuichat-21962",
-    "storage_bucket": "tuichat-21962.appspot.com"
+    "project_number": "142318819146",
+    "firebase_url": "https://we-chat-backend-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "we-chat-backend",
+    "storage_bucket": "we-chat-backend.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:100071186878:android:50bacaea6cdd4b4f88d9ef",
+        "mobilesdk_app_id": "1:142318819146:android:61fb3a9f8fa4a5287753b3",
         "android_client_info": {
           "package_name": "com.weteam.wechat"
         }
       },
       "oauth_client": [
         {
-          "client_id": "100071186878-9gj1mr56jvn0l93d8eplqt0p3jmsm68g.apps.googleusercontent.com",
+          "client_id": "142318819146-nvcmisrlsov0aduchlfjpev1eoc7fsdl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.weteam.wechat",
-            "certificate_hash": "811f550ddf5cbae47942a5435e590dbf4f437134"
+            "certificate_hash": "78aac8e4d26ed428677a47a6597eaf8c0a15b423"
           }
         },
         {
-          "client_id": "100071186878-6i6k720u6vb3vhggu7mc6ci5a2uek536.apps.googleusercontent.com",
+          "client_id": "142318819146-ccuhqs32sj0ocb0famfh50rajr0oc6dq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBLLiBHuVBgbPqmTzFVjKPJjcHVpDAixrQ"
+          "current_key": "AIzaSyBXgykiIygCH0mwv6gL7kTFfigKqGpz7TU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "100071186878-6i6k720u6vb3vhggu7mc6ci5a2uek536.apps.googleusercontent.com",
+              "client_id": "142318819146-ccuhqs32sj0ocb0famfh50rajr0oc6dq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
