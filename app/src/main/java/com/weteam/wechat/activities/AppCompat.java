@@ -22,6 +22,7 @@ public class AppCompat extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 
+
         SettingLanguage.getInstance().changeLanguage(this, DataLocalManager.getLanguage());
     }
 }
