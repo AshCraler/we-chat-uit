@@ -209,7 +209,6 @@ public class ChatFragment extends Fragment {
                         fragmentChatBinding.sflItemStory.setVisibility(View.GONE);
                         fragmentChatBinding.rvStory.setVisibility(View.VISIBLE);
                     } else {
-                        Log.e("kkk", "NO");
                         fragmentChatBinding.sflItemStory.setVisibility(View.GONE);
                         fragmentChatBinding.rvStory.setVisibility(View.VISIBLE);
                     }
