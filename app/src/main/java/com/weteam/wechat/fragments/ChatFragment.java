@@ -43,6 +43,7 @@ import com.weteam.wechat.models.UserStory;
 import com.weteam.wechat.utils.LoadingDialog;
 import com.weteam.wechat.utils.MyToast;
 
+import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import gun0912.tedbottompicker.TedBottomPicker;
 import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
@@ -77,6 +79,7 @@ public class ChatFragment extends Fragment {
     private LoadingDialog loadingDialog;
 
     private User mUser;
+    private long userStoryCount;
 
     public ChatFragment() {
     }
@@ -115,8 +118,6 @@ public class ChatFragment extends Fragment {
     }
 
     private void initializeViews() {
-        firebaseManager.getConversation("cvs01");
-        Log.e("Testest", "kkk");
 //        scale
         animationScale.eventConstraintLayout(getContext(), fragmentChatBinding.cslStory);
 
@@ -145,13 +146,11 @@ public class ChatFragment extends Fragment {
             });
 
             //Get stories
-            FirebaseManager.getInstance().getUserInfo(currentUser.getUid().trim());
             FirebaseManager.getInstance().setReadUserInformation(new FirebaseManager.GetUserInformationListener() {
                 @Override
                 public void getUserInformationListener(User user) {
                     if (user != null) {
-                        Log.e("kkk", "user non-null");
-                        mUser = new User();
+//                        mUser = new User();
                         mUser = user;
 
                         Picasso.get()
@@ -159,29 +158,46 @@ public class ChatFragment extends Fragment {
                                 .placeholder(R.drawable.ic_user_avatar)
                                 .error(R.drawable.ic_user_avatar)
                                 .into(fragmentChatBinding.civStory);
+
+                        fragmentChatBinding.cvUpper.setVisibility(View.VISIBLE);
+                        listeners();
                     }
                 }
             });
+            FirebaseManager.getInstance().getUserInfo(currentUser.getUid().trim());
+
 
             firebaseDatabase.getReference().child(STORY_DATABASE.trim()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         userStoryList = new ArrayList<>();
+                        userStoryCount =  snapshot.getChildrenCount();
 
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             UserStory userStory = new UserStory();
                             userStory.setName(dataSnapshot.child("name").getValue(String.class));
                             userStory.setAvatar(dataSnapshot.child("avatar").getValue(String.class));
-                            userStory.setLastUpdated(dataSnapshot.child("lastUpdated").getValue(String.class));
+                            userStory.setLastUpdated(dataSnapshot.child("last_updated").getValue(String.class));
 
                             List<Story> storyList = new ArrayList<>();
-                            for (DataSnapshot dataSnapshot1 : dataSnapshot.child("stories").getChildren()) {
-                                Story story = dataSnapshot1.getValue(Story.class);
-                                storyList.add(story);
+                            try{
+                                DataSnapshot child = dataSnapshot.child("story_list");
+                                Map<String, Map<String, String>> data = (Map<String, Map<String, String>>)child.getValue();
+
+                                if(data != null) {
+                                    for (Map.Entry<String, Map<String, String>> map : data.entrySet()) {
+                                        Story story = new Story();
+                                        story.setImage(map.getValue().get("image"));
+                                        story.setTime(map.getValue().get("time"));
+                                        storyList.add(story);
+                                    }
+                                    userStory.setStoryList(storyList);
+                                    userStoryList.add(userStory);
+                                }
+                            } catch (Error error){
+                                Log.e("ERROR ", error.toString());
                             }
-                            userStory.setStoryList(storyList);
-                            userStoryList.add(userStory);
                         }
 
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
@@ -281,19 +297,19 @@ public class ChatFragment extends Fragment {
                                     HashMap<String, Object> userStoryObj = new HashMap<>();
                                     userStoryObj.put("name", userStory.getName());
                                     userStoryObj.put("avatar", userStory.getAvatar());
-                                    userStoryObj.put("lastUpdated", userStory.getLastUpdated());
+                                    userStoryObj.put("last_updated", userStory.getLastUpdated());
 
                                     Story story = new Story(storyImage, userStory.getLastUpdated());
 
                                     firebaseDatabase.getReference()
                                             .child(STORY_DATABASE.trim())
-                                            .child(currentUser.getUid().trim())
+                                            .child(String.valueOf(userStoryCount))
                                             .updateChildren(userStoryObj);
 
                                     firebaseDatabase.getReference()
                                             .child(STORY_DATABASE.trim())
-                                            .child(currentUser.getUid().trim())
-                                            .child("stories")
+                                            .child(String.valueOf(userStoryCount))
+                                            .child("story_list")
                                             .push()
                                             .setValue(story);
 

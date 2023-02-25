@@ -1,8 +1,10 @@
 package com.weteam.wechat.database;
 
+import android.media.metrics.Event;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -13,9 +15,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.weteam.wechat.models.Conversation;
+import com.weteam.wechat.models.TestList;
 import com.weteam.wechat.models.User;
 
 import java.util.ArrayList;
@@ -35,7 +39,7 @@ public class FirebaseManager {
 
     private static final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private static final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-    private static final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    public static final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
     private FirebaseManager() {
     }
@@ -116,11 +120,13 @@ public class FirebaseManager {
     }
 
     public void getUserName(String uid) {
-        firebaseDatabase.getReference().child("users/" + uid.trim() + "/name").addValueEventListener(new ValueEventListener() {
+        firebaseDatabase.getReference().child("users/" + uid.trim() + "/name")
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     getUserNameListener.getUserNameListener(snapshot.getValue(String.class));
+                    Log.e("On Data changeeeeeeeeee", snapshot.toString());
                 }
             }
 
@@ -149,11 +155,17 @@ public class FirebaseManager {
 
     public void getConversation(String id) {
         firebaseFirestore.collection("/conversation")
-                .document("/" + id)
+                .document(  id)
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot queryDocumentSnapshots) {
-                Log.e("document cvs01", queryDocumentSnapshots.get("messages", ArrayList.class ).toString());
+                try{
+                    Conversation conversation = queryDocumentSnapshots.toObject(Conversation.class);
+                    Log.e("Doc cvs01", conversation.toString());
+                } catch (Error error){
+                    Log.e("CATCH DDDD: ", error.toString());
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
                     @Override

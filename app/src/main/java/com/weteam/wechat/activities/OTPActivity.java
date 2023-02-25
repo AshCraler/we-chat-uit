@@ -134,6 +134,8 @@ public class OTPActivity extends AppCompat {
                                 }
                             })
                             .build();
+
+                    //Begin verifying
                     PhoneAuthProvider.verifyPhoneNumber(phoneAuthOptions);
                 }
             }
@@ -146,7 +148,10 @@ public class OTPActivity extends AppCompat {
         activityOtpactivityBinding.btnVerifyOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //get 6-digit OTP code
                 String OTP = checkOTP();
+
+                //Check OTP error
                 if (OTP.equals(CODE_1)) {
                     activityOtpactivityBinding.edtOTPCode1.setError(getString(R.string.edtOTPError));
                     openSoftKeyboard.openSoftKeyboard(OTPActivity.this, activityOtpactivityBinding.edtOTPCode1);
@@ -170,10 +175,13 @@ public class OTPActivity extends AppCompat {
                     firebaseAuth.signInWithCredential(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            Log.d("Login complete", "got here");
                             if (task.isSuccessful()) {
                                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                                 if (firebaseUser != null) {
                                     loadingDialog.startLoading(OTPActivity.this, false);
+                                    Log.d("Starting login", "GO");
 
                                     firebaseDatabase.getReference()
                                             .child(USER_DATABASE.trim())

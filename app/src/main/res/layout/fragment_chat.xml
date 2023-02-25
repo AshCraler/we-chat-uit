@@ -9,6 +9,7 @@
 
 <!--    cardview 1-->
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_upper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone">

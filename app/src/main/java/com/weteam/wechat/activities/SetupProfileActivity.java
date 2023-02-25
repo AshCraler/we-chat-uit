@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -96,6 +97,7 @@ public class SetupProfileActivity extends AppCompat {
                                     @Override
                                     public void onSuccess(Uri uri) {
                                         String uid = firebaseUser.getUid();
+                                        Log.d("UID kkkk", uid);
                                         String name = activitySetupProfileBinding.edtSetupProfileName.getText().toString().trim();
                                         String phoneNumber = firebaseUser.getPhoneNumber();
                                         String email = "";

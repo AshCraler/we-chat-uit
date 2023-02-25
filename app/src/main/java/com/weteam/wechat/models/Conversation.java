@@ -1,7 +1,17 @@
 package com.weteam.wechat.models;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Conversation {
-    List<String> messages;
+    private ArrayList<String> messages;
+
+    public Conversation(){}
+
+    public Conversation(ArrayList<String> messages){
+        this.messages = messages;
+    }
+
+    public ArrayList<String> getMessages() {
+        return messages;
+    }
 }
